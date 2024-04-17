@@ -76,12 +76,15 @@ How do I verify that Open MPI has been built with CUDA support?
 ---------------------------------------------------------------
 
 Verify that Open MPI has been built with cuda using ``ompi_info``
+with one of the following commands.
 
 .. code-block:: sh
 
    # Use ompi_info to verify cuda support in Open MPI
-   shell$ ./ompi_info |grep "MPI extensions"
+   shell$ ompi_info | grep "MPI extensions"
           MPI extensions: affinity, cuda, pcollreq
+   shell$ ompi_info --parsable --all | grep mpi_built_with_cuda_support:value
+          mca:mpi:base:param:mpi_built_with_cuda_support:value:true
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -187,19 +190,6 @@ Libfabric's API after registering the memory. If there are no
 CUDA-capable providers available, the buffers will automatically
 be copied to host buffers before being transferred through
 Libfabric's API.
-
-/////////////////////////////////////////////////////////////////////////
-
-
-How can I tell if Open MPI was built with CUDA support?
--------------------------------------------------------
-
-Use the ``ompi_info`` command:
-
-.. code-block::
-
-   shell$ ompi_info --parsable --all | grep mpi_built_with_cuda_support:value
-   mca:mpi:base:param:mpi_built_with_cuda_support:value:true
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -589,7 +579,7 @@ example of using the CUDA-aware macro and run-time check.
        printf("This MPI library cannot determine if there is CUDA-aware support.\n");
    #endif /* MPIX_CUDA_AWARE_SUPPORT */
 
-       printf("Run time check:n");
+       printf("Run time check:\n");
    #if defined(MPIX_CUDA_AWARE_SUPPORT)
        if (1 == MPIX_Query_cuda_support()) {
            printf("This MPI library has CUDA-aware support.\n");
